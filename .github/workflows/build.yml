@@ -20,7 +20,10 @@ jobs:
       - name: Install system packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev libtinfo6 cmake libffi-dev libssl-dev
+          sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev libtinfo6 cmake libffi-dev libssl-dev ant
+
+      - name: Prefer IPv4
+        run: echo "precedence ::ffff:0:0/96  100" | sudo tee -a /etc/gai.conf
 
       - name: Install Buildozer
         run: pip install buildozer cython==3.0.11
