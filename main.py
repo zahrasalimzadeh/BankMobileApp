@@ -1,4 +1,3 @@
-from kivy.core.window import Window
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivymd.app import MDApp
@@ -35,5 +34,4 @@ class BankApp(MDApp):
         return layout
 
 
-Window.size = (360, 640)
 BankApp().run()
