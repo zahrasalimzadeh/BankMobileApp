@@ -1,3 +1,5 @@
+import json
+from kivy.network.urlrequest import UrlRequest
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivymd.app import MDApp
@@ -27,11 +29,28 @@ class BankApp(MDApp):
         layout.add_widget(self.password)
         button = MDCard(size_hint_y=None, height="56dp", radius=[14],
                         md_bg_color=(0.216, 0.353, 0.498, 1),
-                        ripple_behavior=True)
+                        ripple_behavior=True, on_release=self.login)
         button.add_widget(MDLabel(text="Login", halign="center"))
         layout.add_widget(button)
         layout.add_widget(Widget())
         return layout
+
+    def login(self, instance):
+        body = json.dumps({"mobile": self.mobile.text, "password": self.password.text})
+        UrlRequest(
+            "http://127.0.0.1:8001/api/v1/auth/login",
+            req_body=body,
+            req_headers={"Content-Type": "application/json"},
+            on_success=self.login_success,
+            on_failure=self.login_failed,
+            on_error=self.login_failed,
+        )
+
+    def login_success(self, request, result):
+        print(result["message"])
+
+    def login_failed(self, request, error):
+        print("Server error")
 
 
 BankApp().run()
