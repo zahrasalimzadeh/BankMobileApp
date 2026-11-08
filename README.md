@@ -183,7 +183,9 @@ You need three things running: the CoreBanking API, RabbitMQ and the [Notificati
 uvicorn main_api:app --host 0.0.0.0 --port 8001 --reload
 ```
 
-**2. Start the NotificationMicroservice** (in its own project): `python main.py`
+**2. Start the NotificationMicroservice** (in its own project): `python main.py`. In the RabbitMQ management page (`http://localhost:15672`, tab **Connections**) you should now see one connection: the service is waiting for messages.
+
+<img src="docs/images/rabbitmq-connection.png" width="700">
 
 **3. Install and run the app:**
 
@@ -215,16 +217,19 @@ The phone and the computer must be on the **same Wi-Fi**.
 1. Find the IPv4 address of the computer: run `ipconfig` and read `IPv4 Address` under the Wi-Fi adapter (for example `192.168.1.9`).
 2. Start the API with `--host 0.0.0.0` so that other devices can reach it.
 3. Check from another device: open `http://<computer-ip>:8001/health_check` in its browser. It should answer `{"is_health":true}`.
+
+<img src="docs/images/network-health-check.png" width="700">
+
 4. Put the address in `Common/config.py` as `BASE_URL`.
-5. Download the APK (next section), install it and log in.
+5. Download the ready APK from the [Releases page](https://github.com/zahrasalimzadeh/BankMobileApp/releases/latest) (or build it yourself, see the next section), install it and log in.
 
 <div dir="rtl">
 
 1. ‏آدرس IPv4 کامپیوتر را پیدا کنید: دستور `ipconfig` را بزنید و مقدار `IPv4 Address` بخش Wi-Fi را بخوانید (مثلاً `192.168.1.9`).
 2. ‏API را با `--host 0.0.0.0` روشن کنید تا دستگاه‌های دیگر هم به آن برسند.
-3. ‏از یک دستگاه دیگر بررسی کنید: آدرس `http://<ip-کامپیوتر>:8001/health_check` را در مرورگرش باز کنید. باید `{"is_health":true}` را ببینید.
+3. ‏از یک دستگاه دیگر بررسی کنید: آدرس `http://<ip-کامپیوتر>:8001/health_check` را در مرورگرش باز کنید. باید `{"is_health":true}` را ببینید (تصویر بالا).
 4. ‏آدرس را در `Common/config.py` به عنوان `BASE_URL` بنویسید.
-5. ‏فایل APK را بگیرید (بخش بعد)، نصب کنید و وارد شوید.
+5. ‏فایل APK آماده را از صفحه‌ی [Releases](https://github.com/zahrasalimzadeh/BankMobileApp/releases/latest) بگیرید (یا خودتان بسازید، بخش بعد)، نصب کنید و وارد شوید.
 
 </div>
 
@@ -239,6 +244,14 @@ If the IP address of the computer changes (another Wi-Fi, router restart), chang
 ---
 
 # 🤖 Build the APK | ساخت APK
+
+A ready-to-install APK is published on the [Releases page](https://github.com/zahrasalimzadeh/BankMobileApp/releases/latest). The APK works only on Android phones.
+
+<div dir="rtl">
+
+‏یک APK آماده‌ی نصب در صفحه‌ی [Releases](https://github.com/zahrasalimzadeh/BankMobileApp/releases/latest) گذاشته شده است. این APK فقط روی گوشی‌های اندروید کار می‌کند.
+
+</div>
 
 The APK is built by GitHub Actions (`.github/workflows/build.yml`) with Buildozer, so no Linux is needed on your computer. Every push starts a build that takes about 18 minutes.
 
@@ -260,6 +273,8 @@ The APK is built by GitHub Actions (`.github/workflows/build.yml`) with Buildoze
 
 </div>
 
+<img src="docs/images/github-actions-build.png" width="800">
+
 Build settings (`buildozer.spec`): Android API 33, minimum API 21, architectures `arm64-v8a` and `armeabi-v7a`, permission `INTERNET`, python-for-android `v2024.01.21`, NDK `25b`.
 
 ---
@@ -279,13 +294,11 @@ Build settings (`buildozer.spec`): Android API 33, minimum API 21, architectures
 
 # ⚠️ Known limitations | محدودیت‌های فعلی
 
-- The balance and transaction endpoints are not protected by a token yet: after the OTP, the API does not issue a token that the app must send with every request. A token (for example JWT) is the next step to add.
 - The app talks to the API over plain HTTP on the local network. A real bank would use HTTPS.
 - The server address is fixed inside the app and must be changed (and the APK rebuilt) when it changes.
 
 <div dir="rtl">
 
-- ‏endpoint های موجودی و تراکنش هنوز با توکن محافظت نمی‌شوند: بعد از OTP، API توکنی نمی‌دهد که اپلیکیشن با هر درخواست بفرستد. اضافه کردن توکن (مثلاً JWT) قدم بعدی است.
 - ‏اپلیکیشن با API روی شبکه‌ی محلی و با HTTP ساده صحبت می‌کند. بانک واقعی از HTTPS استفاده می‌کند.
 - ‏آدرس سرور داخل اپلیکیشن ثابت است و با تغییرش باید APK دوباره ساخته شود.
 
