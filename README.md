@@ -40,6 +40,22 @@ A mobile banking app built with Python, Kivy and KivyMD. A customer logs in with
 
 ---
 
+# 🎬 Demo video | ویدیوی نمایشی
+
+A short screen recording of the app on a real Android phone: login, the OTP sent by SMS, accounts, balance and transactions.
+
+[▶ Watch the demo video](docs/BankMobileApp-demo.mov)
+
+<div dir="rtl">
+
+‏فیلم کوتاهی از اجرای اپلیکیشن روی یک گوشی اندروید واقعی: ورود، کد OTP که با پیامک می‌رسد، حساب‌ها، موجودی و تراکنش‌ها.
+
+‏[▶ تماشای ویدیو](docs/BankMobileApp-demo.mov)
+
+</div>
+
+---
+
 # 🖼 Screens | صفحه‌ها
 
 ### On Android | روی اندروید
@@ -67,6 +83,10 @@ A mobile banking app built with Python, Kivy and KivyMD. A customer logs in with
 | Accounts | Transactions |
 |:--------:|:------------:|
 | <img src="docs/images/kivy-desktop-03-accounts.png" width="360"> | <img src="docs/images/kivy-desktop-04-transactions.png" width="360"> |
+
+| SMS received on the phone |
+|:-------------------------:|
+| <img src="docs/images/kivy-desktop-05-sms.png" width="220"> |
 
 ---
 
