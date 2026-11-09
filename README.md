@@ -45,7 +45,7 @@ A mobile banking app built with Python, Kivy and KivyMD. A customer logs in with
 A short screen recording of the app on a real Android phone: login, the OTP sent by SMS, accounts, balance and transactions.
 
 
-https://github.com/user-attachments/assets/0d9a9c5d-bb48-4194-9952-68ae8d3db62b
+[![Watch the demo video](docs/demo-preview.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html?tab=video)
 
 
 
@@ -92,6 +92,16 @@ https://github.com/user-attachments/assets/0d9a9c5d-bb48-4194-9952-68ae8d3db62b
 ---
 
 # 🔄 How it works | نحوه‌ی کار
+
+Want to see it step by step? Click the image below (it has a Persian / English switch):
+
+<div dir="rtl">
+
+‏می‌خواهید قدم‌به‌قدم ببینید؟ روی تصویر زیر کلیک کنید (دکمه‌ی فارسی / English دارد):
+
+</div>
+
+[![Interactive diagram](docs/mobile-flow-preview.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html)
 
 1. The customer types a mobile number and a password. The app checks that the mobile number has 11 digits and the password has at least 6 characters.
 2. `POST /api/v1/auth/login` is sent. The API checks the password, creates a 5-digit code, stores it in the database and publishes a message to RabbitMQ.
