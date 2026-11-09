@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>پستچی و اپ موبایل | The Postman & the Mobile App</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:wght@600;700&family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0c1e;--surface:#14142b;--soft:#1e1e3c;--ink:#ecebff;--mut:#9a9bc6;--line:#2a2a50;--wire:#55558a;
+  --api:#b9a2ff;--apib:#241d4d;--db:#a9b4d0;--dbb:#1a1b36;--mq:#f5b942;--mqb:#2e2410;
+  --ns:#4fd1c2;--nsb:#0f3030;--ext:#a8a8c4;--extb:#1e1e36;
+  --ok:#4cc47a;--okb:#11301f;--wa:#f5b942;--wab:#2e2410;--td:#ff8f85;--tdb:#3d1a17;
+  --onp:#0c0c1e;--skin:#f2c29b;--ink2:#2b2118;--app:#222222;--appb:#375a7f;
+  --f:"Vazirmatn",Tahoma,sans-serif;--m:"IBM Plex Mono",ui-monospace,Consolas,monospace;--serif:"Playfair Display",Georgia,serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background-color:var(--bg);
+  background-image:radial-gradient(rgba(185,162,255,.16) 1px,transparent 1.3px);background-size:24px 24px;
+  color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.8;
+  padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.app{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+h1,h2,h3,p{margin:0}
+.en{direction:ltr;unicode-bidi:isolate;font-family:var(--m);font-size:.88em}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.eyebrow{font-size:.8rem;color:var(--mut);font-weight:600}
+h1{font-size:clamp(1.4rem,3vw,2rem);line-height:1.3;font-weight:800}
+html[lang="en"] h1{font-family:var(--serif);font-weight:700}
+.hint{color:var(--mut);font-size:.82rem}
+.lang{display:flex;direction:ltr;gap:2px;padding:3px;border:1.5px solid var(--line);border-radius:999px;background:var(--surface)}
+.lang button{font:600 .9rem var(--f);border:0;background:transparent;color:var(--ink);padding:1px 18px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--api);color:var(--onp)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font:600 .95rem var(--f);border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:2px 16px;cursor:pointer}
+.tab[aria-selected="true"]{border-color:var(--api);background:var(--apib);color:var(--api)}
+.view{display:none;flex-direction:column;gap:10px}
+.view.on{display:flex}
+.stage{background:rgba(20,20,43,.62);border:1px solid var(--line);border-radius:18px;overflow-x:auto;overflow-y:hidden;direction:ltr}
+svg{display:block;width:100%;height:auto;min-width:760px}
+html[lang="fa"] .fa{direction:rtl;unicode-bidi:plaintext}
+html[lang="en"] .fa{direction:ltr;unicode-bidi:normal}
+.t1{font:800 17px var(--f);fill:var(--ink)}
+.t2{font:400 12px var(--m);fill:var(--mut)}
+.t2f{font:600 12px var(--f);fill:var(--mut)}
+.wire{fill:none;stroke:var(--wire);stroke-width:2;stroke-dasharray:5 6}
+.box{stroke-width:2}
+.halo{fill:none;stroke:var(--gl);stroke-width:9;opacity:0;transition:opacity .3s}
+.node.on .halo{opacity:.28}
+.node.on .box{stroke-width:3}
+.off{display:none}
+.row rect{stroke-width:1.5}
+.row.nu rect{fill:var(--nsb);stroke:var(--ns)}
+.row.us rect{fill:var(--soft);stroke:var(--wire)}
+.row text{font:600 13px var(--m);fill:var(--ink)}
+.stamp{font:800 15px var(--f);fill:var(--ok)}
+.sms rect{fill:var(--okb);stroke:var(--ok);stroke-width:1.5}
+.sms text{font:600 11px var(--m);fill:var(--ok);text-anchor:middle}
+.lab rect{fill:var(--c)}
+.lab text{font:600 12px var(--m);fill:var(--onp);text-anchor:middle}
+.env{fill:var(--surface);stroke:var(--c);stroke-width:2;stroke-linejoin:round}
+.envf{fill:none;stroke:var(--c);stroke-width:2;stroke-linejoin:round}
+.leg{transform-box:fill-box;transform-origin:50% 0}
+.walking .legL{animation:swL .36s ease-in-out infinite alternate}
+.walking .legR{animation:swR .36s ease-in-out infinite alternate}
+@keyframes swL{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
+@keyframes swR{from{transform:rotate(28deg)}to{transform:rotate(-28deg)}}
+.hop{animation:hop .5s ease-out}
+@keyframes hop{0%{transform:translateY(0)}35%{transform:translateY(-14px)}70%{transform:translateY(0)}85%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+.vib{transform-box:fill-box;transform-origin:center;animation:vib .6s}
+@keyframes vib{0%,100%{transform:translate(0)}15%{transform:translate(-4px,0) rotate(-3deg)}35%{transform:translate(4px,0) rotate(3deg)}55%{transform:translate(-3px,0)}75%{transform:translate(3px,0)}}
+.pop{transform-box:fill-box;transform-origin:center;animation:pop .45s ease-out}
+@keyframes pop{0%{transform:scale(.3)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.mouth-s{display:none}.sad .mouth-s{display:block}.sad .mouth-h{display:none}
+.ap{font:600 11px var(--m);fill:#ecebff}
+.apm{font:400 9px var(--m);fill:#9a9bc6}
+.apt{font:800 14px var(--f);fill:#ecebff}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-weight:600;font-size:.85rem;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:0 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;line-height:1.9}
+.chip b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--apib);color:var(--api);font-size:.75rem}
+.chip.p2 b{background:var(--wab);color:var(--wa)}
+.chip.cur{border-color:var(--api);background:var(--apib)}
+.chip.p2.cur{border-color:var(--wa);background:var(--wab)}
+.chip.done b{background:var(--ns);color:var(--onp)}
+.chip.p2.done b{background:var(--wa);color:var(--onp)}
+.chip:focus-visible,button:focus-visible,.tab:focus-visible{outline:3px solid var(--api);outline-offset:2px}
+.panel{background:rgba(20,20,43,.9);border:1px solid var(--line);border-radius:18px;padding:12px 18px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:8px 22px}
+.pl{display:flex;flex-direction:column;gap:2px;min-width:0}
+.meta{display:flex;gap:10px;align-items:center}
+.phase{font-size:.75rem;font-weight:800;border-radius:999px;padding:0 10px;background:var(--apib);color:var(--api)}
+.phase.x{background:var(--wab);color:var(--wa)}
+.count{font-size:.8rem;color:var(--mut)}
+.panel h3{font-size:1.1rem;font-weight:800;line-height:1.5}
+.panel p{max-width:70ch;font-size:.93rem}
+.code{margin-top:4px;font:400 .8rem var(--m);direction:ltr;unicode-bidi:isolate;text-align:left;background:var(--soft);border-radius:8px;padding:2px 10px;width:fit-content;max-width:100%;overflow-x:auto}
+.quote{background:var(--wab);border-radius:14px;padding:8px 14px;border-inline-start:4px solid var(--wa);align-self:start}
+.quote small{display:block;font-size:.75rem;font-weight:800;color:var(--wa)}
+.quote q{quotes:none;font-size:.93rem}
+.ctl{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button.b{font:inherit;font-weight:600;border:0;border-radius:12px;padding:2px 18px;cursor:pointer;background:var(--api);color:var(--onp)}
+button.b.alt{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+button.b:disabled{opacity:.45;cursor:default}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.card{text-align:start;font:inherit;color:var(--ink);background:rgba(20,20,43,.9);border:1.5px solid var(--line);border-radius:18px;padding:12px 16px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.card[aria-expanded="true"]{border-color:var(--api);background:var(--apib)}
+.card .ic{font-size:1.8rem;line-height:1.2}
+.card h3{font-size:1.02rem;font-weight:800}
+.card .as{color:var(--wa);font-weight:600;font-size:.88rem}
+.card .more{display:none;font-size:.88rem;color:var(--ink)}
+.card[aria-expanded="true"] .more{display:block}
+.card .files{font:400 .74rem var(--m);direction:ltr;unicode-bidi:isolate;text-align:left;color:var(--mut);background:var(--soft);border-radius:8px;padding:2px 8px;margin-top:2px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;direction:ltr;justify-content:center;background:rgba(20,20,43,.62);border:1px solid var(--line);border-radius:18px;padding:12px}
+.flow span{font:600 .8rem var(--m);border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:0 10px}
+.flow i{color:var(--api);font-style:normal}
+.note{background:rgba(20,20,43,.9);border:1px solid var(--line);border-radius:18px;padding:12px 18px}
+.note h3{font-size:1.02rem;font-weight:800;margin-bottom:2px}
+.note p{font-size:.93rem;max-width:80ch}
+.vwrap{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:18px;align-items:start}
+.player{position:relative;border-radius:22px;overflow:hidden;border:2px solid var(--api);background:#000;aspect-ratio:9/16;max-height:78vh}
+.player video{width:100%;height:100%;display:block;object-fit:contain;background:#000}
+.bigplay{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(rgba(12,12,30,.25),rgba(12,12,30,.55));border:0;cursor:pointer;padding:0}
+.bigplay span{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:var(--api);color:var(--onp);font-size:34px;box-shadow:0 0 0 10px rgba(185,162,255,.25);transition:transform .2s}
+.bigplay:hover span{transform:scale(1.08)}
+.bigplay.gone{display:none}
+.vinfo{display:flex;flex-direction:column;gap:8px}
+.vinfo ul{margin:0;padding-inline-start:20px}
+.vinfo a{color:var(--api);font-weight:600}
+@media (max-width:760px){.panel{grid-template-columns:1fr}.vwrap{grid-template-columns:1fr}.player{max-width:320px;margin-inline:auto}}
+@media (prefers-reduced-motion:reduce){.walking .legL,.walking .legR,.hop,.vib,.pop{animation:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 data-t="h1"></h1>
+    <div class="hint" data-t="hint"></div>
+  </div>
+  <div class="lang" role="group" data-aria="langLabel">
+    <button type="button" data-lang="fa" aria-pressed="true">فارسی</button>
+    <button type="button" data-lang="en" aria-pressed="false">English</button>
+  </div>
+</header>
+
+<div class="tabs" role="tablist" id="tabs">
+  <button class="tab" type="button" role="tab" data-tab="journey" aria-selected="true" data-t="tabJourney"></button>
+  <button class="tab" type="button" role="tab" data-tab="layers" aria-selected="false" data-t="tabLayers"></button>
+  <button class="tab" type="button" role="tab" data-tab="video" aria-selected="false" data-t="tabVideo"></button>
+</div>
+
+<section class="view on" id="view-journey">
+<div class="stage">
+<svg id="svg" viewBox="0 0 1100 400" preserveAspectRatio="xMidYMid meet" role="img" data-aria="svgLabel">
+  <path class="wire" d="M230 100H400"/>
+  <path class="wire" d="M570 100H650"/>
+  <path class="wire" d="M770 100H860"/>
+  <path class="wire" d="M485 145V230"/>
+  <path class="wire" d="M955 145V380H130V352" style="opacity:.55"/>
+
+  <g id="n-phone" class="node" style="--gl:var(--api)">
+    <rect class="halo" x="26" y="16" width="208" height="338" rx="30"/>
+    <rect class="box" x="30" y="20" width="200" height="330" rx="26" fill="#0f0f20" stroke="var(--api)"/>
+    <rect x="40" y="38" width="180" height="294" rx="16" fill="var(--app)"/>
+    <rect x="105" y="26" width="50" height="6" rx="3" fill="var(--wire)"/>
+
+    <g id="scr-login">
+      <circle cx="130" cy="82" r="20" fill="var(--appb)"/>
+      <text x="130" y="89" text-anchor="middle" font-size="20">🏦</text>
+      <text class="apt" x="130" y="124" text-anchor="middle">Bank</text>
+      <text class="apm" x="130" y="138" text-anchor="middle">Sign in to your account</text>
+      <rect x="56" y="152" width="148" height="30" rx="8" fill="none" stroke="#9a9bc6"/>
+      <text class="ap" x="66" y="171">09120000002</text>
+      <rect x="56" y="192" width="148" height="30" rx="8" fill="none" stroke="#9a9bc6"/>
+      <text class="ap" x="66" y="211">••••••</text>
+      <rect x="56" y="238" width="148" height="32" rx="10" fill="var(--appb)"/>
+      <text class="ap" x="130" y="259" text-anchor="middle">Login</text>
+    </g>
+    <g id="scr-otp" class="off">
+      <text class="apt" x="130" y="92" text-anchor="middle">Verify</text>
+      <text class="apm" x="130" y="108" text-anchor="middle">Enter the 5-digit code</text>
+      <rect x="56" y="140" width="148" height="34" rx="8" fill="none" stroke="#9a9bc6"/>
+      <text class="ap" x="130" y="162" text-anchor="middle">2 0 3 2 9</text>
+      <rect x="56" y="200" width="148" height="32" rx="10" fill="var(--appb)"/>
+      <text class="ap" x="130" y="221" text-anchor="middle">Verify</text>
+    </g>
+    <g id="scr-accounts" class="off">
+      <text class="apt" x="56" y="70">Accounts</text>
+      <g id="card1"><rect x="52" y="86" width="156" height="58" rx="12" fill="#2e2e2e" stroke="var(--appb)"/>
+      <text class="ap" x="64" y="108">6037000002</text><text class="apm" x="64" y="124">Balance: 4,050,000</text></g>
+      <rect x="52" y="154" width="156" height="58" rx="12" fill="#2e2e2e"/>
+      <text class="ap" x="64" y="176">1000000001</text><text class="apm" x="64" y="192">Balance: 5,500,000</text>
+    </g>
+    <g id="scr-tx" class="off">
+      <text class="apt" x="56" y="70">Transactions</text>
+      <rect x="52" y="86" width="156" height="40" rx="10" fill="#2e2e2e"/>
+      <text class="ap" x="64" y="104" style="fill:#66cc80">+ Deposit</text><text class="apm" x="64" y="118">1,000,000</text>
+      <rect x="52" y="134" width="156" height="40" rx="10" fill="#2e2e2e"/>
+      <text class="ap" x="64" y="152" style="fill:#e67373">- Withdraw</text><text class="apm" x="64" y="166">250,000</text>
+      <rect x="52" y="182" width="156" height="40" rx="10" fill="#2e2e2e"/>
+      <text class="ap" x="64" y="200" style="fill:#66cc80">+ Deposit</text><text class="apm" x="64" y="214">500,000</text>
+    </g>
+    <g id="smsMsg" class="sms off"><rect x="56" y="48" width="148" height="30" rx="10"/><text x="130" y="67">SMS: 20329</text></g>
+    <text class="t2f fa" data-t="phoneName" x="130" y="342" text-anchor="middle"></text>
+  </g>
+
+  <g id="n-api" class="node" style="--gl:var(--api)">
+    <rect class="halo" x="396" y="51" width="178" height="98" rx="18"/>
+    <rect class="box" x="400" y="55" width="170" height="90" rx="14" fill="var(--apib)" stroke="var(--api)"/>
+    <text class="t1" x="485" y="92" text-anchor="middle">CoreBanking API</text>
+    <text class="t2" x="485" y="116" text-anchor="middle">FastAPI · :8001</text>
+  </g>
+  <g id="n-rmq" class="node" style="--gl:var(--mq)">
+    <rect class="halo" x="646" y="51" width="128" height="98" rx="18"/>
+    <rect class="box" x="650" y="55" width="120" height="90" rx="14" fill="var(--mqb)" stroke="var(--mq)"/>
+    <text class="t1" x="710" y="92" text-anchor="middle" style="fill:var(--mq)">RabbitMQ</text>
+    <text class="t2" x="710" y="116" text-anchor="middle">queue</text>
+  </g>
+  <g id="n-ns" class="node" style="--gl:var(--ns)">
+    <rect class="halo" x="856" y="51" width="198" height="98" rx="18"/>
+    <rect class="box" x="860" y="55" width="190" height="90" rx="14" fill="var(--nsb)" stroke="var(--ns)"/>
+    <text class="t1" x="955" y="88" text-anchor="middle">Notification</text>
+    <text class="t2" x="955" y="108" text-anchor="middle">→ sms.ir</text>
+    <text class="t2f fa" data-t="nsSub" x="955" y="130" text-anchor="middle"></text>
+  </g>
+  <g id="n-sql" class="node" style="--gl:var(--db)">
+    <rect class="halo" x="396" y="226" width="178" height="108" rx="18"/>
+    <rect class="box" x="400" y="230" width="170" height="100" rx="14" fill="var(--dbb)" stroke="var(--db)"/>
+    <text class="t1" x="485" y="256" text-anchor="middle">SQL Server</text>
+    <text class="t2" x="485" y="274" text-anchor="middle">otp · customer</text>
+    <g id="sqlrow" class="row nu off"><rect x="412" y="284" width="146" height="34" rx="8"/><text id="rowCode" x="424" y="306">20329</text><text id="rowSt" x="550" y="306" text-anchor="end">not used</text></g>
+  </g>
+  <text id="stamp" class="stamp fa off" x="560" y="360" text-anchor="end"></text>
+  <g id="conf"></g>
+
+  <g id="pm">
+    <g id="pmHop"><g id="pmFlip">
+      <g class="leg legL"><rect x="-8" y="10" width="7" height="20" rx="3" fill="var(--ink2)"/></g>
+      <g class="leg legR"><rect x="1" y="10" width="7" height="20" rx="3" fill="var(--ink2)"/></g>
+      <rect x="-14" y="-10" width="28" height="26" rx="8" fill="var(--api)"/>
+      <rect x="-22" y="-4" width="14" height="18" rx="4" fill="var(--mq)"/>
+      <path d="M-16 -9L12 14" stroke="var(--ink2)" stroke-width="2.5" fill="none"/>
+      <rect x="9" y="-6" width="15" height="6" rx="3" fill="var(--api)" transform="rotate(-40 9 -3)"/>
+      <circle cx="0" cy="-22" r="12" fill="var(--skin)"/>
+      <path d="M-13 -25A13 12 0 0 1 13 -25Z" fill="var(--api)"/>
+      <rect x="-3" y="-27" width="20" height="5" rx="2.5" fill="var(--api)"/>
+      <circle cx="-4" cy="-21" r="1.7" fill="var(--ink2)"/><circle cx="5" cy="-21" r="1.7" fill="var(--ink2)"/>
+      <g class="mouth-h"><path d="M-4 -15Q0 -11 5 -15" stroke="var(--ink2)" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>
+      <g class="mouth-s"><path d="M-4 -12Q0 -16 5 -12" stroke="var(--ink2)" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>
+    </g></g>
+    <g id="carry" class="off">
+      <g id="lab" class="lab"><rect/><text/></g>
+      <g id="env"><rect class="env" x="-17" y="-12" width="34" height="24" rx="3"/><path class="envf" d="M-17 -12L0 2L17 -12"/></g>
+    </g>
+  </g>
+</svg>
+</div>
+
+<div class="chips" id="chips" role="group" data-aria="stepsLabel"></div>
+
+<div class="panel" aria-live="polite">
+  <div class="pl">
+    <div class="meta"><span class="phase" id="phase"></span><span class="count" id="count"></span></div>
+    <h3 id="title"></h3>
+    <p id="text"></p>
+    <div class="code" id="code"></div>
+  </div>
+  <div class="quote"><small data-t="saysLabel"></small><q id="quote"></q></div>
+  <div class="ctl">
+    <button class="b alt" id="prev" type="button" data-t="prev"></button>
+    <button class="b" id="next" type="button" data-t="next"></button>
+    <button class="b alt" id="play" type="button" aria-pressed="false"></button>
+  </div>
+</div>
+</section>
+
+<section class="view" id="view-layers">
+  <div class="note"><h3 data-t="layH"></h3><p data-t="layP"></p></div>
+  <div class="cards" id="cards"></div>
+  <div class="flow" aria-hidden="true"><span>Screen</span><i>→</i><span>BusinessLogic</span><i>→</i><span>ApiClient</span><i>→</i><span>CoreBanking API</span><i>→</i><span>on_done(result)</span><i>→</i><span>Screen</span></div>
+  <div class="note"><h3 data-t="cbH"></h3><p data-t="cbP"></p></div>
+</section>
+
+<section class="view" id="view-video">
+  <div class="vwrap">
+    <div class="player">
+      <video id="vid" controls preload="metadata" playsinline poster="images/mobile-01-login.png" src="BankMobileApp-demo.mov"></video>
+      <button class="bigplay" id="bigplay" type="button" data-aria="playLabel"><span>▶</span></button>
+    </div>
+    <div class="vinfo">
+      <h2 data-t="vidH"></h2>
+      <p data-t="vidP"></p>
+      <ul id="vidList"></ul>
+      <p><a href="BankMobileApp-demo.mov" download data-t="vidDl"></a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+var NS='http://www.w3.org/2000/svg';
+var $=function(s){return document.querySelector(s)};
+var all=function(s){return document.querySelectorAll(s)};
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var FA='۰۱۲۳۴۵۶۷۸۹';
+var lang='fa';
+function num(n){return lang==='fa'?String(n).replace(/\d/g,function(d){return FA[d]}):String(n)}
+
+var UI={
+fa:{
+ h1:'پستچی و اپ موبایل',
+ eyebrow:'<span class="en">BankMobileApp</span> · ۸ مرحله از ورود تا تراکنش‌ها',
+ hint:'روی شماره‌ها کلیک کن یا پخش خودکار رو بزن',
+ saysLabel:'پستچی می‌گه',prev:'قبلی',next:'بعدی',play:'پخش خودکار',stop:'توقف',
+ tabJourney:'مسیر ورود',tabLayers:'لایه‌ها',tabVideo:'فیلم',
+ phoneName:'اپ موبایل (Kivy)',nsSub:'همیشه گوش به زنگ',
+ svgLabel:'نمودار متحرک مسیر ورود، کد پیامکی، حساب‌ها و تراکنش‌ها بین اپ موبایل، API، RabbitMQ، Notification و sms.ir',
+ langLabel:'زبان',stepsLabel:'مرحله‌ها',playLabel:'پخش فیلم',
+ part1:'بخش ۱ · ورود و کد پیامکی',part2:'بخش ۲ · تأیید و صفحه‌ها',
+ count:function(i,n){return 'مرحله‌ی '+num(i)+' از '+num(n)},
+ stampOk:'✓ کد درسته',
+ layH:'اپ مثل یه رستورانه',
+ layP:'هر لایه یه کار داره و فقط با همسایه‌ی خودش حرف می‌زنه. روی هر کارت کلیک کن تا بیشتر بخونی.',
+ cbH:'«بعداً خبر بده» یعنی چی؟ (on_done)',
+ cbP:'اپ نمی‌تونه منتظر جواب سرور بمونه، وگرنه صفحه یخ می‌زنه. پس مثل سفارش با شماره‌ی تلفن کار می‌کنه: گارسون شماره‌ش رو می‌ده (on_done) و می‌ره سراغ بقیه‌ی میزها؛ وقتی غذا آماده شد، پیک به همون شماره زنگ می‌زنه و گارسون غذا رو می‌بره.',
+ vidH:'فیلم اجرای اپ روی گوشی',
+ vidP:'یه فیلم کوتاه از اپ روی یه گوشی اندروید واقعی. توی فیلم می‌بینی:',
+ vidDl:'دانلود فیلم'
+},
+en:{
+ h1:'The Postman & the Mobile App',
+ eyebrow:'<span class="en">BankMobileApp</span> · 8 steps from login to transactions',
+ hint:'Click the numbers or press Auto-play',
+ saysLabel:'The postman says',prev:'Previous',next:'Next',play:'Auto-play',stop:'Stop',
+ tabJourney:'Login journey',tabLayers:'Layers',tabVideo:'Video',
+ phoneName:'Mobile app (Kivy)',nsSub:'Always listening',
+ svgLabel:'Animated diagram of login, the SMS code, accounts and transactions between the mobile app, the API, RabbitMQ, Notification and sms.ir',
+ langLabel:'Language',stepsLabel:'Steps',playLabel:'Play video',
+ part1:'Part 1 · Login and SMS code',part2:'Part 2 · Verify and screens',
+ count:function(i,n){return 'Step '+i+' of '+n},
+ stampOk:'✓ Code is correct',
+ layH:'The app is like a restaurant',
+ layP:'Each layer has one job and talks only to its neighbour. Click a card to read more.',
+ cbH:'What does “tell me later” mean? (on_done)',
+ cbP:'The app cannot wait for the server, or the screen would freeze. So it works like ordering by phone number: the waiter leaves a number (on_done) and goes to other tables; when the food is ready, the courier calls that number and the waiter serves it.',
+ vidH:'The app running on a phone',
+ vidP:'A short recording of the app on a real Android phone. You will see:',
+ vidDl:'Download the video'
+}};
+
+var VIDLIST={
+fa:['صفحه‌ی ورود با شماره و رمز','کد ۵ رقمی که با پیامک می‌رسه','لیست حساب‌ها و موجودی','تراکنش‌های یک حساب (واریز سبز، برداشت قرمز)'],
+en:['The login screen with mobile and password','The 5-digit code that arrives by SMS','The list of accounts and balances','The transactions of one account (deposit green, withdraw red)']
+};
+
+var LAYERS={
+fa:[
+ {ic:'📦',n:'Common',as:'انبار',more:'چیزهایی که همه لازم دارن: آدرس سرور، رنگ‌ها و شکل جواب‌ها. هیچ کس رو صدا نمی‌زنه.',files:'config.py · response.py'},
+ {ic:'🛵',n:'DataAccess',as:'پیک',more:'تنها کسی که از ساختمون بیرون می‌ره و با سرور حرف می‌زنه. غذا رو می‌گیره و می‌آره، بدون اینکه بدونه چه غذایی بوده.',files:'api_client.py'},
+ {ic:'👨‍🍳',n:'BusinessLogic',as:'آشپز',more:'قانون‌ها اینجاست: شماره باید ۱۱ رقم باشه، رمز حداقل ۶ حرف، کد ۵ رقم. مبلغ‌ها و تاریخ‌ها هم اینجا قشنگ می‌شن.',files:'auth_business_logic.py · account_business_logic.py'},
+ {ic:'🍽',n:'Presentation',as:'گارسون',more:'چیزی که کاربر می‌بینه: صفحه‌ها و دکمه‌ها. سفارش رو می‌گیره و می‌ده به آشپز، و جواب رو روی میز می‌ذاره.',files:'Screens/login · otp · accounts · transactions'},
+ {ic:'🚪',n:'main.py',as:'در رستوران',more:'همه‌چیز رو آماده می‌کنه و درها رو باز می‌کنه: پیک و آشپزها رو می‌سازه، به گارسون‌ها می‌ده و اولین صفحه رو نشون می‌ده.',files:'main.py'}
+],
+en:[
+ {ic:'📦',n:'Common',as:'The storeroom',more:'Things everyone needs: the server address, the colors and the shape of a response. It calls nobody.',files:'config.py · response.py'},
+ {ic:'🛵',n:'DataAccess',as:'The courier',more:'The only one who leaves the building and talks to the server. Brings the food without knowing what the dish is.',files:'api_client.py'},
+ {ic:'👨‍🍳',n:'BusinessLogic',as:'The cook',more:'The rules live here: mobile must have 11 digits, password at least 6 characters, code 5 digits. Amounts and dates are made pretty here too.',files:'auth_business_logic.py · account_business_logic.py'},
+ {ic:'🍽',n:'Presentation',as:'The waiter',more:'What the user sees: screens and buttons. Takes the order, hands it to the cook and puts the answer on the table.',files:'Screens/login · otp · accounts · transactions'},
+ {ic:'🚪',n:'main.py',as:'The restaurant door',more:'Gets everything ready and opens the doors: builds the courier and the cooks, gives them to the waiters and shows the first screen.',files:'main.py'}
+]};
+
+var STEPS=[
+{path:'phR,apiL',c:'--api',lab:'mobile + password',active:['phone','api'],s0:'login',s1:'login',
+ code:'POST /api/v1/auth/login  { mobile, password }',
+ fa:{chip:'ورود',title:'کاربر شماره و رمزش رو می‌زنه',
+  text:'اپ فقط ظاهره. شماره‌ی ۱۱ رقمی و رمز (حداقل ۶ حرف) رو چک می‌کنه و بعد نامه رو می‌ده دست پستچی تا ببره پیش API.',
+  quote:'نامه‌ی ورود! لطفاً رمزتون رو به کسی نگید.'},
+ en:{chip:'Login',title:'The user types mobile and password',
+  text:'The app is only the face. It checks the 11-digit number and the password (at least 6 characters), then hands the letter to the postman to carry to the API.',
+  quote:'A login letter! Please don’t tell anyone your password.'}},
+{path:'apiB,sqlT',c:'--db',lab:'code 20329 + expires_at',active:['api','sql'],s0:'login',s1:'login',
+ code:'otp table  ←  insert(code, expires_at)',
+ fa:{chip:'ذخیره‌ی کد',title:'API کد رو تو دفتر می‌نویسه',
+  text:'API رمز رو چک می‌کنه، یه کد ۵ رقمی می‌سازه و با زمان انقضا (۲ دقیقه) تو جدول otp ذخیره می‌کنه.',
+  quote:'کد رو تو دفتر ثبت کردم. دو دقیقه وقت داره!'},
+ en:{chip:'Save code',title:'The API writes the code in the ledger',
+  text:'The API checks the password, creates a 5-digit code and stores it in the otp table with an expiry time (2 minutes).',
+  quote:'I wrote the code in the ledger. It has two minutes!'}},
+{path:'apiR,rmqL',c:'--mq',lab:'{ phone, content }',active:['api','rmq'],s0:'login',s1:'otp',
+ code:'publish  →  notification-exchange  →  notification-queue',
+ fa:{chip:'صف',title:'API پیامک نمی‌فرسته، پیام رو می‌ندازه تو صف',
+  text:'API فقط یه پیام (phone و content) می‌ندازه تو RabbitMQ و فوری به اپ جواب می‌ده: «Code was sent.». اپ هم صفحه‌ی کد رو باز می‌کنه.',
+  quote:'نامه رو انداختم تو صندوق. بقیه‌ش با Notification!'},
+ en:{chip:'Queue',title:'The API doesn’t send the SMS, it drops the message in the queue',
+  text:'The API only drops a message (phone and content) into RabbitMQ and answers the app at once: “Code was sent.”. The app opens the code screen.',
+  quote:'I dropped the letter in the mailbox. The rest is up to Notification!'}},
+{path:'rmqR,nsL',c:'--ns',lab:'{ phone, content }',active:['rmq','ns','phone'],s0:'otp',s1:'otp',sms:true,
+ code:'Notification  →  HTTP  →  sms.ir',
+ fa:{chip:'پیامک',title:'Notification پیامک رو می‌فرسته',
+  text:'میکروسرویس Notification که همیشه گوش به زنگه، پیام رو از صف برمی‌داره و با sms.ir پیامک می‌فرسته. چند ثانیه بعد گوشی می‌لرزه.',
+  quote:'پیامک رفت! گوشی لرزید؟ یعنی کار من تموم شد.'},
+ en:{chip:'SMS',title:'Notification sends the SMS',
+  text:'The Notification microservice, always listening, takes the message from the queue and sends the SMS through sms.ir. A few seconds later the phone vibrates.',
+  quote:'SMS sent! Did the phone buzz? Then my job is done.'}},
+{path:'phR,apiL',c:'--api',lab:'mobile + password + code',active:['phone','api'],s0:'otp',s1:'otp',keepSms:true,
+ code:'POST /api/v1/auth/verify-otp  { mobile, password, code }',
+ fa:{chip:'تأیید',title:'کاربر کد رو می‌زنه',
+  text:'کاربر کد پیامک‌شده رو تو اپ می‌نویسه. اپ چک می‌کنه فقط ۵ رقم باشه و بعد با شماره و رمز می‌فرسته.',
+  quote:'دوباره منم! این بار با کد پیامک.'},
+ en:{chip:'Verify',title:'The user enters the code',
+  text:'The user types the SMS code into the app. The app checks it is exactly 5 digits, then sends it together with the number and password.',
+  quote:'It’s me again! This time with the SMS code.'}},
+{path:'apiB,sqlT',c:'--db',lab:'check code',active:['api','sql'],s0:'otp',s1:'otp',used:true,
+ code:'get_valid_otp()  +  mark_as_used()',
+ fa:{chip:'بررسی',title:'API تو دفتر نگاه می‌کنه',
+  text:'سه چیز چک می‌شه: کد درسته؟ قبلاً استفاده نشده؟ منقضی نشده؟ اگه همه‌چی خوبه، کد «استفاده‌شده» علامت می‌خوره تا دوباره کار نکنه.',
+  quote:'کد رو با دفتر تطبیق می‌دم. اینجا هیچ‌کس تقلب نمی‌کنه!'},
+ en:{chip:'Check',title:'The API looks in the ledger',
+  text:'Three things are checked: is the code correct, unused and not expired? If all is fine, the code is marked “used” so it can’t work again.',
+  quote:'I’m matching the code against the ledger. Nobody cheats here!'}},
+{path:'apiL,phR',c:'--ok',lab:'customer_id + full_name',active:['api','phone'],s0:'otp',s1:'accounts',used:true,confetti:true,
+ code:'GET /api/v1/accounts?customer_id=  +  /accounts/{id}/balance',
+ fa:{chip:'حساب‌ها',title:'خوش‌آمدی! حساب‌ها اومدن',
+  text:'API اسم و شناسه‌ی مشتری رو برمی‌گردونه. اپ اون‌ها رو تو حافظه نگه می‌داره، صفحه‌ی حساب‌ها رو باز می‌کنه و حساب‌ها و موجودی‌ها رو می‌گیره.',
+  quote:'تحویل شد! حالا برم یه چایی بخورم.'},
+ en:{chip:'Accounts',title:'Welcome! The accounts arrived',
+  text:'The API returns the customer’s id and name. The app keeps them in memory, opens the accounts page and fetches the accounts and balances.',
+  quote:'Delivered! Now I’ll go have some tea.'}},
+{path:'apiL,phR',c:'--ok',lab:'transactions list',active:['api','phone'],s0:'accounts',s1:'tx',used:true,
+ code:'GET /api/v1/transactions?account_id=',
+ fa:{chip:'تراکنش‌ها',title:'روی یه حساب بزن، تراکنش‌ها میاد',
+  text:'با کلیک روی کارت، اپ account_id رو می‌فرسته و لیست واریز (سبز) و برداشت (قرمز) رو نشون می‌ده. با Logout، اپ اسم و شناسه رو فراموش می‌کنه و برمی‌گرده به ورود.',
+  quote:'این ماجرا تموم شد. موفق باشی!'},
+ en:{chip:'Transactions',title:'Tap an account, the transactions arrive',
+  text:'When a card is tapped, the app sends the account_id and shows the deposits (green) and withdrawals (red). On Logout, the app forgets the name and id and goes back to login.',
+  quote:'That’s the end of the story. Good luck!'}}
+];
+
+var P={phR:[240,100],apiL:[392,100],apiR:[578,100],rmqL:[642,100],rmqR:[778,100],nsL:[852,100],apiB:[485,152],sqlT:[485,222]};
+STEPS.forEach(function(s){s.path=s.path.split(',').map(function(k){return P[k]})});
+
+var cur=0,token=0,playing=false,timer=null,flip=1,ph='start',tab='journey';
+var pm=$('#pm'),pmHop=$('#pmHop'),pmFlip=$('#pmFlip'),carry=$('#carry'),lab=$('#lab');
+var chips=$('#chips');
+
+function show(el,on){el.classList.toggle('off',!on)}
+function onChipClick(e){stopPlay();go(Number(e.currentTarget.getAttribute('data-i')))}
+function buildChips(){
+  chips.innerHTML='';
+  STEPS.forEach(function(s,i){
+    var b=document.createElement('button');b.type='button';b.className='chip'+(i>=4?' p2':'');
+    b.setAttribute('data-i',i);
+    b.innerHTML='<b>'+num(i+1)+'</b>'+s[lang].chip;
+    b.addEventListener('click',onChipClick);
+    chips.appendChild(b);
+  });
+}
+function setPos(x,y,dir){
+  pm.setAttribute('transform','translate('+x+' '+y+') scale(1.15)');
+  if(dir){flip=dir;pmFlip.setAttribute('transform','scale('+dir+' 1)')}
+  carry.setAttribute('transform','translate('+(flip*26)+' -44)');
+}
+function setLabel(text,c){
+  carry.style.setProperty('--c','var('+c+')');
+  var t=lab.querySelector('text'),r=lab.querySelector('rect');
+  t.textContent=text;t.setAttribute('x',0);t.setAttribute('y',-30);
+  var w=t.getComputedTextLength?t.getComputedTextLength():text.length*7;
+  r.setAttribute('x',-w/2-8);r.setAttribute('y',-43);r.setAttribute('width',w+16);r.setAttribute('height',19);r.setAttribute('rx',9);
+}
+function screen(name){
+  ['login','otp','accounts','tx'].forEach(function(n){show($('#scr-'+n),n===name)});
+}
+function nodeState(i,phase){
+  ph=phase;
+  var s=STEPS[i];
+  ['phone','api','rmq','ns','sql'].forEach(function(n){
+    $('#n-'+n).classList.toggle('on',s.active.indexOf(n)>-1);
+  });
+  screen(phase==='end'?s.s1:s.s0);
+  var bubble=(i===3&&phase==='end')||s.keepSms===true;
+  show($('#smsMsg'),bubble);
+  var row=$('#sqlrow');
+  var rowOn=i>=1&&i<=5;
+  var isUsed=(i===5&&phase==='end')||i>5;
+  row.setAttribute('class','row '+(isUsed?'us':'nu')+(rowOn?'':' off'));
+  $('#rowSt').textContent=isUsed?'used':'not used';
+  var stampOn=i===5&&phase==='end';
+  var sp=$('#stamp');show(sp,stampOn);
+  if(stampOn)sp.textContent=UI[lang].stampOk;
+}
+function confetti(){
+  var g=$('#conf');g.innerHTML='';
+  var cols=['--api','--mq','--ns','--ok','--wa'];
+  for(var k=0;k<16;k++){
+    var c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',130);c.setAttribute('cy',100);c.setAttribute('r',4);
+    c.setAttribute('fill','var('+cols[k%5]+')');g.appendChild(c);
+    var a=Math.PI*2*k/16,d=60+Math.random()*40;
+    if(c.animate&&!reduce)c.animate([{transform:'translate(0,0)',opacity:1},{transform:'translate('+Math.cos(a)*d+'px,'+(Math.sin(a)*d-20)+'px)',opacity:0}],{duration:1100,easing:'ease-out'});
+  }
+  setTimeout(clearConf,1150);
+}
+function clearConf(){$('#conf').innerHTML=''}
+function vibrate(id){var el=$(id);el.classList.remove('vib');void el.getBoundingClientRect();el.classList.add('vib')}
+function hopNow(){pmHop.classList.remove('hop');void pmHop.getBoundingClientRect();pmHop.classList.add('hop')}
+function run(pts,dur,onpos,tk,done){
+  var seg=[],tot=0,i;
+  for(i=1;i<pts.length;i++){var l=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(l);tot+=l}
+  var t0=null;
+  function frame(ts){
+    if(tk!==token)return;
+    if(t0===null)t0=ts;
+    var t=Math.min(1,(ts-t0)/dur),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2,d=e*tot,k=0;
+    while(k<seg.length-1&&d>seg[k]){d-=seg[k];k++}
+    var f=seg[k]?d/seg[k]:1,x=pts[k][0]+(pts[k+1][0]-pts[k][0])*f,y=pts[k][1]+(pts[k+1][1]-pts[k][1])*f;
+    var dx=pts[k+1][0]-pts[k][0];
+    onpos(x,y,dx,ts);
+    if(t<1)requestAnimationFrame(frame);else done();
+  }
+  requestAnimationFrame(frame);
+}
+function smsFly(tk){
+  return new Promise(function(res){
+    var pts=[[955,152],[955,380],[130,380],[130,356]],g=$('#conf');g.innerHTML='';
+    var e=document.createElementNS(NS,'g');
+    e.innerHTML='<rect x="-17" y="-12" width="34" height="24" rx="3" fill="var(--okb)" stroke="var(--ok)" stroke-width="2"/><path d="M-17 -12L0 2L17 -12" fill="none" stroke="var(--ok)" stroke-width="2"/>';
+    g.appendChild(e);
+    function place(x,y){e.setAttribute('transform','translate('+x+' '+y+')')}
+    function finish(){g.innerHTML='';res()}
+    run(pts,reduce?1:1900,place,tk,finish);
+  });
+}
+function panel(i){
+  var s=STEPS[i],u=UI[lang];
+  $('#phase').textContent=i<4?u.part1:u.part2;
+  $('#phase').className='phase'+(i>=4?' x':'');
+  $('#count').textContent=u.count(i+1,STEPS.length);
+  $('#title').textContent=s[lang].title;
+  $('#text').textContent=s[lang].text;
+  $('#code').textContent=s.code;
+  $('#quote').textContent=s[lang].quote;
+  Array.prototype.forEach.call(chips.children,function(b,k){
+    b.classList.toggle('cur',k===i);b.classList.toggle('done',k<i);
+    if(k===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');
+  });
+  $('#prev').disabled=i===0;
+  $('#next').disabled=i===STEPS.length-1;
+}
+function nextAuto(){
+  if(!playing)return;
+  if(cur<STEPS.length-1)go(cur+1);else stopPlay();
+}
+function go(i){
+  token++;var tk=token;cur=i;
+  var s=STEPS[i],pts=s.path.slice();
+  pm.classList.remove('sad');pmHop.classList.remove('hop');
+  panel(i);nodeState(i,'start');
+  $('#conf').innerHTML='';
+  var dir0=Math.sign(pts[1][0]-pts[0][0])||flip;
+  setPos(pts[0][0],pts[0][1],dir0);
+  setLabel(s.lab,s.c);show(carry,true);
+  pm.classList.add('walking');
+  var len=Math.hypot(pts[1][0]-pts[0][0],pts[1][1]-pts[0][1]);
+  var dur=reduce?1:Math.max(1200,len/0.085);
+  function onpos(x,y,dx,ts){
+    var bob=reduce?0:Math.sin(ts/70)*1.6;
+    setPos(x,y+bob,Math.sign(dx)||flip);
+  }
+  function arrived(){
+    pm.classList.remove('walking');
+    setPos(pts[1][0],pts[1][1],flip);
+    show(carry,false);hopNow();
+    nodeState(i,'end');
+    var after=Promise.resolve();
+    if(s.sms){after=smsFly(tk).then(function(){if(tk!==token)return;nodeState(i,'end');vibrate('#n-phone')})}
+    if(s.confetti){confetti();vibrate('#n-phone')}
+    if(i===STEPS.length-1)pm.classList.add('sad');
+    if(i===STEPS.length-1)pm.classList.remove('sad');
+    after.then(function(){
+      if(tk!==token)return;
+      if(playing){
+        clearTimeout(timer);
+        timer=setTimeout(nextAuto,1700);
+      }
+    });
+  }
+  run(pts,dur,onpos,tk,arrived);
+}
+function playLabel(){var b=$('#play');b.textContent=playing?UI[lang].stop:UI[lang].play;b.setAttribute('aria-pressed',playing?'true':'false')}
+function stopPlay(){playing=false;clearTimeout(timer);playLabel()}
+
+function onCardClick(e){
+  var c=e.currentTarget;
+  c.setAttribute('aria-expanded',c.getAttribute('aria-expanded')==='true'?'false':'true');
+}
+function buildCards(){
+  var box=$('#cards');box.innerHTML='';
+  LAYERS[lang].forEach(function(L){
+    var b=document.createElement('button');b.type='button';b.className='card';b.setAttribute('aria-expanded','false');
+    b.innerHTML='<span class="ic">'+L.ic+'</span><h3 class="en">'+L.n+'</h3><span class="as">'+L.as+'</span><span class="more">'+L.more+'</span><span class="files">'+L.files+'</span>';
+    b.addEventListener('click',onCardClick);
+    box.appendChild(b);
+  });
+}
+function buildVidList(){
+  var ul=$('#vidList');ul.innerHTML='';
+  VIDLIST[lang].forEach(function(t){var li=document.createElement('li');li.textContent=t;ul.appendChild(li)});
+}
+
+function setTab(name){
+  tab=name;
+  all('.tab').forEach(function(b){b.setAttribute('aria-selected',b.getAttribute('data-tab')===name?'true':'false')});
+  all('.view').forEach(function(v){v.classList.toggle('on',v.id==='view-'+name)});
+  if(name!=='journey')stopPlay();
+  if(name!=='video'){var v=$('#vid');if(v&&!v.paused)v.pause()}
+}
+function onTabClick(e){setTab(e.currentTarget.getAttribute('data-tab'))}
+
+function applyLang(l){
+  lang=l;var u=UI[l];
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='fa'?'rtl':'ltr';
+  document.title=l==='fa'?'پستچی و اپ موبایل | The Postman & the Mobile App':'The Postman & the Mobile App | پستچی و اپ موبایل';
+  all('[data-t]').forEach(function(el){el.textContent=u[el.getAttribute('data-t')]});
+  all('[data-aria]').forEach(function(el){el.setAttribute('aria-label',u[el.getAttribute('data-aria')])});
+  $('#eyebrow').innerHTML=u.eyebrow;
+  all('.lang button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-lang')===l?'true':'false')});
+  buildChips();buildCards();buildVidList();playLabel();panel(cur);nodeState(cur,ph);
+  try{localStorage.setItem('bm-lang',l)}catch(e){}
+}
+function onLangClick(e){applyLang(e.currentTarget.getAttribute('data-lang'))}
+all('.lang button').forEach(function(b){b.addEventListener('click',onLangClick)});
+all('.tab').forEach(function(b){b.addEventListener('click',onTabClick)});
+
+function onPlayClick(){
+  if(playing){stopPlay();return}
+  playing=true;playLabel();
+  if(cur>=STEPS.length-1)go(0);else go(cur);
+}
+function onNext(){stopPlay();if(cur<STEPS.length-1)go(cur+1)}
+function onPrev(){stopPlay();if(cur>0)go(cur-1)}
+$('#play').addEventListener('click',onPlayClick);
+$('#next').addEventListener('click',onNext);
+$('#prev').addEventListener('click',onPrev);
+
+function onBigPlay(){
+  var v=$('#vid');
+  $('#bigplay').classList.add('gone');
+  var p=v.play();
+  if(p&&p.catch)p.catch(showControlsOnly);
+}
+function showControlsOnly(){$('#bigplay').classList.add('gone')}
+function onVideoPause(){if($('#vid').ended)$('#bigplay').classList.remove('gone')}
+$('#bigplay').addEventListener('click',onBigPlay);
+$('#vid').addEventListener('ended',onVideoPause);
+
+function onKey(e){
+  if(tab!=='journey')return;
+  var nextKey=lang==='fa'?'ArrowLeft':'ArrowRight',prevKey=lang==='fa'?'ArrowRight':'ArrowLeft';
+  if(e.key===nextKey)onNext();
+  if(e.key===prevKey)onPrev();
+}
+document.addEventListener('keydown',onKey);
+
+var start='fa',startTab='journey';
+try{
+  var qs=new URLSearchParams(location.search);
+  var ql=qs.get('lang'),qt=qs.get('tab');
+  var saved=null;
+  try{saved=localStorage.getItem('bm-lang')}catch(e1){}
+  if(ql==='en'||ql==='fa')start=ql;else if(saved==='en'||saved==='fa')start=saved;
+  if(qt==='layers'||qt==='video'||qt==='journey')startTab=qt;
+}catch(e){}
+applyLang(start);
+setTab(startTab);
+go(0);
+})();
+</script>
+</body>
+</html>
