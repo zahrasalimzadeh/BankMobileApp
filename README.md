@@ -101,7 +101,7 @@ Want to see it step by step? Click the image below (it has a Persian / English s
 
 </div>
 
-[![Interactive diagram](docs/mobile-flow-preview.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html)
+[![Interactive diagram](docs/mobile-flow-play.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html)
 
 1. The customer types a mobile number and a password. The app checks that the mobile number has 11 digits and the password has at least 6 characters.
 2. `POST /api/v1/auth/login` is sent. The API checks the password, creates a 5-digit code, stores it in the database and publishes a message to RabbitMQ.
