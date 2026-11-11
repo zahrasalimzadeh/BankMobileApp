@@ -163,6 +163,14 @@ The project follows the same layers as CoreBanking. Each layer has one job:
 | `Presentation` | Screens and widgets | صفحه‌ها و ظاهر برنامه |
 | `main.py` | Creates the objects and starts the app | ساخت شیءها و روشن کردن برنامه |
 
+**The app has no database.** It only talks to the CoreBanking API. All the data (customers, accounts, transactions and the one-time codes) stays in the SQL Server of the CoreBanking project.
+
+<div dir="rtl">
+
+‏**این اپلیکیشن دیتابیس ندارد.** فقط با API پروژه‌ی CoreBanking حرف می‌زند. همه‌ی داده‌ها (مشتری‌ها، حساب‌ها، تراکنش‌ها و کدهای یک‌بارمصرف) در SQL Server پروژه‌ی CoreBanking می‌مانند.
+
+</div>
+
 The server does not answer instantly, so every method of the business logic receives a function (`on_done`) that is called later with the answer.
 
 <div dir="rtl">
