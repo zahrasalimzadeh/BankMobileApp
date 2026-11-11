@@ -45,7 +45,7 @@ A mobile banking app built with Python, Kivy and KivyMD. A customer logs in with
 A short screen recording of the app on a real Android phone: login, the OTP sent by SMS, accounts, balance and transactions.
 
 
-[![Watch the demo video](docs/demo-preview.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html?tab=video)
+[![Watch the demo video](docs/demo-preview.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html?only=video)
 
 
 
@@ -101,7 +101,7 @@ Want to see it step by step? Click the image below (it has a Persian / English s
 
 </div>
 
-[![Interactive diagram](docs/mobile-flow-play.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html)
+[![Interactive diagram](docs/mobile-flow-play.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html?only=journey)
 
 1. The customer types a mobile number and a password. The app checks that the mobile number has 11 digits and the password has at least 6 characters.
 2. `POST /api/v1/auth/login` is sent. The API checks the password, creates a 5-digit code, stores it in the database and publishes a message to RabbitMQ.
@@ -124,6 +124,16 @@ Want to see it step by step? Click the image below (it has a Persian / English s
 ---
 
 # 🏗 Architecture | معماری
+
+Want to see the layers explained like a restaurant? Click the image below (it has a Persian / English switch):
+
+<div dir="rtl">
+
+‏می‌خواهید لایه‌ها را مثل یک رستوران ببینید؟ روی تصویر زیر کلیک کنید (دکمه‌ی فارسی / English دارد):
+
+</div>
+
+[![Interactive layers](docs/mobile-layers-play.png)](https://zahrasalimzadeh.github.io/BankMobileApp/mobile-flow.html?only=layers)
 
 The project follows the same layers as CoreBanking. Each layer has one job:
 
