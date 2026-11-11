@@ -52,6 +52,20 @@ A short screen recording of the app on a real Android phone: login, the OTP sent
 
 ‏فیلم کوتاهی از اجرای اپلیکیشن روی یک گوشی اندروید واقعی: ورود، کد OTP که با پیامک می‌رسد، حساب‌ها، موجودی و تراکنش‌ها.
 
+**Watch on LinkedIn:**
+
+<div dir="rtl">
+
+‏**تماشا در لینکدین:**
+
+</div>
+
+| Video | ویدیو | Link |
+|-------|-------|------|
+| Video 1 | ویدیو ۱ | [Watch on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7516611332004061185/) |
+| Video 2 | ویدیو ۲ | [Watch on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7526002152469700609/) |
+| Video 3 | ویدیو ۳ | [Watch on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7526047492837167104/) |
+
 
 
 
@@ -151,29 +165,6 @@ The project follows the same layers as CoreBanking. Each layer has one job:
 | `Presentation` | Screens and widgets | صفحه‌ها و ظاهر برنامه |
 | `main.py` | Creates the objects and starts the app | ساخت شیءها و روشن کردن برنامه |
 
-```
-BankMobileApp
-├── main.py
-├── buildozer.spec
-├── images/bank.png
-├── Common
-│   ├── config.py
-│   └── response.py
-├── DataAccess
-│   └── api_client.py
-├── BusinessLogic
-│   ├── auth_business_logic.py
-│   └── account_business_logic.py
-├── Presentation
-│   ├── components.py
-│   └── Screens
-│       ├── login_screen.py
-│       ├── otp_screen.py
-│       ├── accounts_screen.py
-│       └── transactions_screen.py
-└── .github/workflows/build.yml
-```
-
 The server does not answer instantly, so every method of the business logic receives a function (`on_done`) that is called later with the answer.
 
 <div dir="rtl">
@@ -181,6 +172,58 @@ The server does not answer instantly, so every method of the business logic rece
 ‏سرور فوراً جواب نمی‌دهد. به همین دلیل هر تابع لایه‌ی BusinessLogic یک تابع (`on_done`) می‌گیرد که بعداً و با رسیدن جواب صدا زده می‌شود.
 
 </div>
+
+---
+
+# 📁 Project Structure | ساختار پروژه
+
+The files of the project:
+
+<div dir="rtl">
+
+‏فایل‌های پروژه:
+
+</div>
+
+```
+BankMobileApp
+├── main.py
+├── buildozer.spec
+├── README.md
+├── .gitignore
+├── images
+│   └── bank.png
+├── Common
+│   ├── __init__.py
+│   ├── config.py
+│   └── response.py
+├── DataAccess
+│   ├── __init__.py
+│   └── api_client.py
+├── BusinessLogic
+│   ├── __init__.py
+│   ├── auth_business_logic.py
+│   └── account_business_logic.py
+├── Presentation
+│   ├── __init__.py
+│   ├── components.py
+│   └── Screens
+│       ├── __init__.py
+│       ├── login_screen.py
+│       ├── otp_screen.py
+│       ├── accounts_screen.py
+│       └── transactions_screen.py
+├── docs
+│   ├── mobile-flow.html
+│   ├── BankMobileApp-demo.mov
+│   ├── demo-preview.png
+│   ├── mobile-flow-play.png
+│   ├── mobile-layers-play.png
+│   └── images
+└── .github
+    └── workflows
+        └── build.yml
+```
 
 ---
 
@@ -239,7 +282,10 @@ python main.py
 
 <div dir="rtl">
 
-‏۴. با یکی از مشتری‌های فایل `CreateDatabase.sql` پروژه‌ی CoreBanking وارد شوید (مثلاً رمز `123456`). پیامک به شماره‌ی موبایلی که برای آن مشتری ذخیره شده می‌رود، پس هنگام تست از شماره‌ای استفاده کنید که خودتان دارید.
+1. ‏**API را روشن کنید** (در پروژه‌ی CoreBanking): دستور `uvicorn` بالا را بزنید.
+2. ‏**NotificationMicroservice را روشن کنید** (در پروژه‌ی خودش): دستور `python main.py` را بزنید. در صفحه‌ی مدیریت RabbitMQ (آدرس `http://localhost:15672`، تب **Connections**) باید یک اتصال ببینید: یعنی سرویس منتظر پیام است (تصویر بالا).
+3. ‏**برنامه را نصب و اجرا کنید:** دو دستور `pip install` و `python main.py` بالا را بزنید.
+4. ‏با یکی از مشتری‌های فایل `CreateDatabase.sql` پروژه‌ی CoreBanking وارد شوید (مثلاً رمز `123456`). پیامک به شماره‌ی موبایلی که برای آن مشتری ذخیره شده می‌رود، پس هنگام تست از شماره‌ای استفاده کنید که خودتان دارید.
 
 </div>
 
@@ -318,6 +364,12 @@ The APK is built by GitHub Actions (`.github/workflows/build.yml`) with Buildoze
 
 Build settings (`buildozer.spec`): Android API 33, minimum API 21, architectures `arm64-v8a` and `armeabi-v7a`, permission `INTERNET`, python-for-android `v2024.01.21`, NDK `25b`.
 
+<div dir="rtl">
+
+‏تنظیمات ساخت (`buildozer.spec`): اندروید با API نسخه‌ی ۳۳، حداقل API نسخه‌ی ۲۱، معماری‌های `arm64-v8a` و `armeabi-v7a`، دسترسی `INTERNET`، python-for-android نسخه‌ی `v2024.01.21` و NDK نسخه‌ی `25b`.
+
+</div>
+
 ---
 
 # 🛠 Technologies | فناوری‌ها
@@ -326,21 +378,19 @@ Build settings (`buildozer.spec`): Android API 33, minimum API 21, architectures
 |------------|-----|--------|
 | Python | Language | زبان برنامه‌نویسی |
 | Kivy 2.3 | Cross-platform UI | رابط کاربری چندسکویی |
-| KivyMD 1.2.0 | Material Design widgets | ظاهر Material |
-| `UrlRequest` (Kivy) | Non-blocking HTTP calls | درخواست‌های HTTP بدون قفل شدن برنامه |
-| Buildozer | Creating the Android APK | ساخت APK اندروید |
-| GitHub Actions | Building the APK in the cloud | ساخت APK روی سرور GitHub |
+| KivyMD 1.2.0 | Material Design widgets | ابزارک‌های طراحی متریال |
+| `UrlRequest` (Kivy) | Non-blocking HTTP calls | درخواست‌های اینترنتی بدون قفل شدن برنامه |
+| Buildozer | Creating the Android APK | ساخت فایل نصب اندروید |
+| GitHub Actions | Building the APK in the cloud | ساخت فایل نصب روی سرور گیت‌هاب |
 
 ---
 
 # ⚠️ Known limitations | محدودیت‌های فعلی
 
-- The app talks to the API over plain HTTP on the local network. A real bank would use HTTPS.
 - The server address is fixed inside the app and must be changed (and the APK rebuilt) when it changes.
 
 <div dir="rtl">
 
-- ‏اپلیکیشن با API روی شبکه‌ی محلی و با HTTP ساده صحبت می‌کند. بانک واقعی از HTTPS استفاده می‌کند.
 - ‏آدرس سرور داخل اپلیکیشن ثابت است و با تغییرش باید APK دوباره ساخته شود.
 
 </div>
