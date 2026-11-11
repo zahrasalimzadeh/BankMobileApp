@@ -60,14 +60,12 @@ A short screen recording of the app on a real Android phone: login, the OTP sent
 
 </div>
 
-| Video | ویدیو | Link |
-|-------|-------|------|
-| Video 1 | ویدیو ۱ | [Watch on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7516611332004061185/) |
-| Video 2 | ویدیو ۲ | [Watch on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7526002152469700609/) |
-| Video 3 | ویدیو ۳ | [Watch on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7526047492837167104/) |
-
-
-
+<table>
+<tr><th>Video</th><th>ویدیو</th><th>Link</th></tr>
+<tr><td dir="ltr">Receiving the OTP code</td><td dir="rtl">دریافت کد OTP</td><td><a href="https://www.linkedin.com/feed/update/urn:li:activity:7516611332004061185/">Watch on LinkedIn</a></td></tr>
+<tr><td dir="ltr">Full demo of Core Banking</td><td dir="rtl">دموی کامل Core Banking</td><td><a href="https://www.linkedin.com/feed/update/urn:li:activity:7526002152469700609/">Watch on LinkedIn</a></td></tr>
+<tr><td dir="ltr">Full demo of Bank Mobile App</td><td dir="rtl">دموی کامل 𝗕𝗮𝗻𝗸 𝗠𝗼𝗯𝗶𝗹𝗲 𝗔𝗽𝗽</td><td><a href="https://www.linkedin.com/feed/update/urn:li:activity:7526047492837167104/">Watch on LinkedIn</a></td></tr>
+</table>
 
 ---
 
@@ -227,7 +225,7 @@ BankMobileApp
 
 ---
 
-# 🌐 API used by the app | APIهای مورد استفاده
+# 🌐 API used by the app | سرویس‌های مورد استفاده‌ی اپ
 
 | Method | Endpoint | Description | توضیح |
 |--------|----------|-------------|-------|
