@@ -626,6 +626,7 @@ function applyLang(l){
   document.documentElement.dir=l==='fa'?'rtl':'ltr';
   document.title=l==='fa'?'پستچی و اپ موبایل | The Postman & the Mobile App':'The Postman & the Mobile App | پستچی و اپ موبایل';
   all('[data-t]').forEach(function(el){el.textContent=u[el.getAttribute('data-t')]});
+  if(solo&&SOLO[solo]){var st=SOLO[solo][l];$('h1').textContent=st;document.title=st}
   all('[data-aria]').forEach(function(el){el.setAttribute('aria-label',u[el.getAttribute('data-aria')])});
   $('#eyebrow').innerHTML=u.eyebrow;
   all('.lang button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-lang')===l?'true':'false')});
@@ -666,6 +667,8 @@ function onKey(e){
 }
 document.addEventListener('keydown',onKey);
 
+var solo=null;
+var SOLO={video:{fa:'ویدیوی اپ موبایل بانک',en:'Bank Mobile App | Demo video'},layers:{fa:'لایه‌های اپ موبایل بانک',en:'Bank Mobile App | The layers'}};
 var start='fa',startTab='journey';
 try{
   var qs=new URLSearchParams(location.search);
@@ -675,7 +678,7 @@ try{
   if(ql==='en'||ql==='fa')start=ql;else if(saved==='en'||saved==='fa')start=saved;
   if(qt==='layers'||qt==='video'||qt==='journey')startTab=qt;
   var qo=qs.get('only');
-  if(qo==='layers'||qo==='video'||qo==='journey'){startTab=qo;document.body.classList.add('solo')}
+  if(qo==='layers'||qo==='video'||qo==='journey'){startTab=qo;document.body.classList.add('solo');solo=qo}
 }catch(e){}
 applyLang(start);
 setTab(startTab);
