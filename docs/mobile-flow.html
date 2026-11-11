@@ -34,6 +34,7 @@ html[lang="en"] h1{font-family:var(--serif);font-weight:700}
 .lang button{font:600 .9rem var(--f);border:0;background:transparent;color:var(--ink);padding:1px 18px;border-radius:999px;cursor:pointer}
 .lang button[aria-pressed="true"]{background:var(--api);color:var(--onp)}
 .tabs{display:flex;gap:6px;flex-wrap:wrap}
+.solo .tabs,.solo .hint,.solo #eyebrow{display:none}
 .tab{font:600 .95rem var(--f);border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:2px 16px;cursor:pointer}
 .tab[aria-selected="true"]{border-color:var(--api);background:var(--apib);color:var(--api)}
 .view{display:none;flex-direction:column;gap:10px}
@@ -673,6 +674,8 @@ try{
   try{saved=localStorage.getItem('bm-lang')}catch(e1){}
   if(ql==='en'||ql==='fa')start=ql;else if(saved==='en'||saved==='fa')start=saved;
   if(qt==='layers'||qt==='video'||qt==='journey')startTab=qt;
+  var qo=qs.get('only');
+  if(qo==='layers'||qo==='video'||qo==='journey'){startTab=qo;document.body.classList.add('solo')}
 }catch(e){}
 applyLang(start);
 setTab(startTab);
